@@ -1,7 +1,6 @@
 ﻿#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <vector>
-#include <chrono>
 #include <omp.h>
 using namespace cv;
 using namespace std;
@@ -59,9 +58,6 @@ int main() {
     smileCascade.load("haarcascade_smile.xml");
     VideoCapture cap("video.mp4");
     cap.isOpened();  
-    int frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
-    int frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-    double fps = cap.get(cv::CAP_PROP_FPS);
     vector<Mat> processedFrames;
     Mat frame;
     while (cap.read(frame)) 
@@ -79,6 +75,9 @@ int main() {
         processedFrames.push_back(frame.clone());
     }
     cap.release();
+    int frameWidth = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
+    int frameHeight = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+    double fps = cap.get(cv::CAP_PROP_FPS);
     VideoWriter video("output.mp4",VideoWriter::fourcc('m', 'p', '4', 'v'), fps, Size(frameWidth, frameHeight));
     for (const auto& frame : processedFrames) 
     {
